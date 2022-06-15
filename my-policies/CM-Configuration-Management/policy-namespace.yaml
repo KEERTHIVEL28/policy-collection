@@ -1,7 +1,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: namespace-create
+  name: namespace-creates
   namespace: policy-namespace-keerthi
   annotations:
     policy.open-cluster-management.io/categories: CM Configuration Management
@@ -27,15 +27,15 @@ spec:
                 apiVersion: v1
                 kind: Namespace
                 metadata:
-                  name: prod
+                  name: prods
           remediationAction: inform
           severity: low
   remediationAction: enforce
 status:
   compliant: Compliant
   placement:
-    - placementBinding: namespace-create-placement
-      placementRule: namespace-create-placement
+    - placementBinding: namespace-creates-placement
+      placementRule: namespace-creates-placement
   status:
     - clustername: local-cluster
       clusternamespace: local-cluster
@@ -44,7 +44,7 @@ status:
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: namespace-create-placement
+  name: namespace-creates-placement
   namespace: policy-namespace-keerthi
   annotations:
 spec:
@@ -69,10 +69,10 @@ status:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: namespace-create-placement
+  name: namespace-creates-placement
   namespace: policy-namespace-keerthi
 placementRef:
-  name: namespace-create-placement
+  name: namespace-creates-placement
   apiGroup: apps.open-cluster-management.io
   kind: PlacementRule
 subjects:
