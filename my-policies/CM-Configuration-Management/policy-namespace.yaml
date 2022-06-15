@@ -29,27 +29,32 @@ spec:
                 metadata:
                   name: prod
 ---
-apiVersion: policy.open-cluster-management.io/v1
-kind: PlacementBinding
-metadata:
-  name: binding-policy-namespace
-placementRef:
-  name: placement-policy-namespace
-  kind: PlacementRule
-  apiGroup: apps.open-cluster-management.io
-subjects:
-- name: policy-namespace-keerthi
-  kind: Policy
-  apiGroup: policy.open-cluster-management.io
----
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-namespace
+  name: keerthi-placement
+  namespace: policy-namespace-keerthi
 spec:
-  clusterConditions:
-  - status: "True"
-    type: ManagedClusterConditionAvailable
   clusterSelector:
     matchExpressions:
-      - {key: environment, operator: In, values: ["dev"]}
+      - key: environment
+        operator: In
+        values:
+          - dev
+  clusterConditions:
+    - status: "True"
+      type: ManagedClusterConditionAvailable
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: keerthi-placement
+  namespace: policy-namespace-keerthi
+placementRef:
+  name: keerthi-placement
+  apiGroup: apps.open-cluster-management.io
+  kind: PlacementRule
+subjects:
+  - name: keerthi
+    apiGroup: policy.open-cluster-management.io
+    kind: Policy
