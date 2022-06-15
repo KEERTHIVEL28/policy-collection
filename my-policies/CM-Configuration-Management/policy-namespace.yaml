@@ -2,6 +2,7 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   name: policy-namespace-keerthi
+  namespace: policy-namespace-keerthi
   annotations:
     policy.open-cluster-management.io/standards: NIST SP 800-53
     policy.open-cluster-management.io/categories: CM Configuration Management
@@ -16,15 +17,17 @@ spec:
         metadata:
           name: policy-namespace-example
         spec:
-          remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+          remediationAction: inform
           severity: low
           namespaceSelector:
-            exclude: ["kube-*"]
-            include: ["default"]
+            exclude:
+              - kube-*
+            include:
+              - default
           object-templates:
             - complianceType: musthave
               objectDefinition:
-                kind: Namespace # must have namespace 'prod'
+                kind: Namespace
                 apiVersion: v1
                 metadata:
                   name: prod
@@ -32,7 +35,7 @@ spec:
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: keerthi-placement
+  name: policy-namespace-keerthi-placement
   namespace: policy-namespace-keerthi
 spec:
   clusterSelector:
@@ -48,13 +51,13 @@ spec:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: keerthi-placement
+  name: policy-namespace-keerthi-placement
   namespace: policy-namespace-keerthi
 placementRef:
-  name: keerthi-placement
+  name: policy-namespace-keerthi-placement
   apiGroup: apps.open-cluster-management.io
   kind: PlacementRule
 subjects:
-  - name: keerthi
+  - name: policy-namespace-keerthi
     apiGroup: policy.open-cluster-management.io
     kind: Policy
